@@ -4,7 +4,7 @@ var jwt = require('jsonwebtoken');
 
 var UserSchema = new mongoose.Schema();
 
-UserSchema.methods.generateJWT = function () {
+UserSchema.methods.generateJWT = function (userId, username) {
 
 	// set expiration to 1 day
 	var today = new Date();
@@ -12,6 +12,9 @@ UserSchema.methods.generateJWT = function () {
 	exp.setDate(today.getDate() + 1);
 
 	return jwt.sign({
+		success: true,
+		userId: userId,
+		username: username,
 		exp: parseInt(exp.getTime() / 1000),
 	}, process.env.SCOTT_ELECTRIC_SECRET);
 };
