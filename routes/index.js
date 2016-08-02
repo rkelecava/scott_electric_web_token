@@ -7,7 +7,12 @@ var jwt = require('jsonwebtoken');
 
 
 router.get('/tokenDecrypt', function(req, res, next) {
-	var token = req.body.token || req.query.token || req.headers['x-access-token'];
+	if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+        var token = req.headers.authorization.split(' ')[1];
+    } else {
+		var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    }
+
 
 	if (token) {
 
@@ -35,7 +40,10 @@ router.get('/tokenDecrypt', function(req, res, next) {
 router.get('/token', function(req, res, next) {
 	var user = new User();
 
-	return res.json({token: user.generateJWT(req.query.userId, req.query.username)});
+	var userId = req.query.userId || req.body.userId;
+	var username = req.query.username || req.body.username;
+
+	return res.json({token: user.generateJWT(userId, username)});
 });
 
 
