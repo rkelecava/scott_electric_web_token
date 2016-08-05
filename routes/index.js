@@ -42,8 +42,21 @@ router.get('/token', function(req, res, next) {
 
 	var userId = req.query.userId || req.body.userId;
 	var username = req.query.username || req.body.username;
+	var isAdmin = req.query.isAdmin || req.body.isAdmin;
+	var company = req.query.company || req.body.company;
+	var title = req.query.title || req.body.title;
+	var email = req.query.email || req.body.email;
 
-	return res.json({token: user.generateJWT(userId, username)});
+	var myUser = {
+		userId: userId,
+		username: username,
+		isAdmin: isAdmin,
+		company: company,
+		title: title,
+		email: email
+	};
+
+	return res.json({token: user.generateJWT(myUser)});
 });
 
 
